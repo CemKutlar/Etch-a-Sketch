@@ -5,8 +5,7 @@ const grid_container = document.createElement("div");
 let grids;
 console.table(grids);
 
-
-const gridArray = Array.from(grid_container);
+let gridArray;
 
 //below code stores the first argument in this css property -> grid-template-columns: repeat(<cssColumnStyle>, 1fr);
 let cssColumnStyle = Math.sqrt(totalGridCount).toString();
@@ -36,13 +35,42 @@ function gridFactory(totalGridCount){
         console.log(size);
         
     });
+    gridArray =  Array.from(grids);
 }
 
+
+function twoD_ArrayConverter(oneDarr) {
+    const newArr = [];
+    while(oneDarr.length) newArr.push(oneDarr.splice(0,cssColumnStyle));
+    return newArr;
+}
 
 gridFactory(totalGridCount);
+let twoDGridArr = twoD_ArrayConverter(gridArray);
+gridCreateAnimation(twoDGridArr);
 
+function gridCreateAnimation(gridTwoDArray) {
+    let animationClassNum = 0;
+    for(let i = 0; i<cssColumnStyle; i++) {
+        for(let j = 0; j<cssColumnStyle; j++) {
+            gridTwoDArray[i][j].classList.add("animation" + (i+j));
+        }
+    }
 
-
-function gridCreateAnimation(gridArray) {
-
+    for(let i = 0; i<totalGridCount; i++) {
+        setTimeout(function timer() {
+            let crossGrids = document.querySelectorAll(".animation"+i.toString());
+            console.log(crossGrids);
+            crossGrids.forEach(element => {
+                element.classList.add("animateGrids");
+            });
+        }, i * 300);
+    }
+    
+     
+            // innerElem.classList.add("animation" + animationClassNum);
+       
 }
+
+gridCreateAnimation(twoDGridArr);
+
